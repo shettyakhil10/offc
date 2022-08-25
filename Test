@@ -1,1 +1,145 @@
 
+using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Interactions;
+using System.IO;
+using System.Threading;
+using WebDriverManager.DriverConfigs.Impl;
+
+namespace Nike_test
+{
+    //IWebDriver driver;
+    public class Tests
+    {
+        IWebDriver driver;
+        string username = "admin_lionbridge";
+        string password = "#%99!fv5:}aSQx^+";
+        int total = 100;
+        [SetUp]
+        public void Setup()
+        {
+
+
+            new WebDriverManager.DriverManager().SetUpDriver(new FirefoxConfig());
+            driver = new FirefoxDriver();
+
+            driver.Url = "https://nike2.lingotek.com/project/255/newdocuments?communityId=bbd48f7b-6f6c-4cf3-aa01-53af5fba0a8fhttps://nike2.lingotek.com/project/legacy/255/newdocuments?communityId=bbd48f7b-6f6c-4cf3-aa01-53af5fba0a8f";
+            driver.Manage().Window.Maximize();
+            driver.FindElement(By.Name("username")).SendKeys(username);
+            driver.FindElement(By.Name("password")).SendKeys(password);
+            driver.FindElement(By.ClassName("button")).Click();
+            Thread.Sleep(3000);
+
+
+
+
+        }
+
+        [Test]
+        public void Test1()
+        {
+            driver.SwitchTo().Frame(0);
+            //driver.FindElement(By.ClassName("btn-sm")).Click();
+            //driver.FindElement(By.ClassName("btn-sm")).SendKeys("D:\\New folder\\nike_test.doc");
+
+            driver.FindElement(By.XPath("//li[@title='Chinese, Taiwan']//span[@role='presentation'][normalize-space()='×']")).Click();
+            driver.FindElement(By.XPath("//li[@title='French, Canada']//span[@role='presentation'][normalize-space()='×']")).Click();
+            driver.FindElement(By.XPath("//li[@title='German, Germany']//span[@role='presentation'][normalize-space()='×']")).Click();
+            driver.FindElement(By.XPath("//li[@title='Italian, Italy']//span[@role='presentation'][normalize-space()='×']")).Click();
+            driver.FindElement(By.XPath("//li[@title='Japanese, Japan']//span[@role='presentation'][normalize-space()='×']")).Click();
+            driver.FindElement(By.XPath("//li[@title='Polish, Poland']//span[@role='presentation'][normalize-space()='×']")).Click();
+            driver.FindElement(By.XPath("//li[@title='Spanish, Argentina']//span[@role='presentation'][normalize-space()='×']")).Click();
+
+
+
+            byte[] bytes = System.IO.File.ReadAllBytes(@"D:\\New folder\\nike_test.docx");
+
+
+            for (int j = 0; j <= total; j++)
+            {
+                string filename = "test-manual-II-" + j + ".docx";
+                string path = @"D:\\New folder\\";
+                string fullPath = Path.Combine(path, filename); // this will result in c:\temp\test.txt
+
+                File.WriteAllBytes(fullPath, bytes);
+
+            }
+
+            for (int i = 0; i <= total; i++)
+            {
+                driver.FindElement(By.Id("newdocument-drop-file")).SendKeys("D:\\New folder\\test-manual-I" + i + ".docx");
+
+
+
+            }
+            IWebElement framescroll = driver.FindElement(By.XPath("newdocument-save"));
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].scrollIntoView(true);", framescroll);
+            Thread.Sleep(3000);
+            driver.FindElement(By.Id("newdocument-save")).Click();
+
+            Thread.Sleep(10000);
+
+            driver.FindElement(By.Id("newdocument-close")).Click();
+
+            for (int k = 0; k <= total; k++)
+            {
+                // string filename = "test" + k + ".docx";
+                string path = @"D:\\New folder\\test-manual-II-" + k + ".docx";
+                //string fullPath = Path.Combine(path, filename); // this will result in c:\temp\test.txt
+
+
+                File.Delete(path);
+
+
+            }
+
+
+
+
+            //    Thread.Sleep(3000);
+            //    //for (int m = 0; m <= total; m++)
+            //    //{
+
+            //    Thread.Sleep(3000);
+
+            //    driver.FindElement(By.XPath("(//span[contains(@id,'select2-document-actions-select-container')]")).Click();
+            //    driver.FindElement(By.XPath("//li[contains(.,'Leverage TM')]")).Click();
+
+            //    driver.FindElement(By.XPath("//input[contains(@name,'name')]")).SendKeys("test");
+            //    Thread.Sleep(3000);
+            //    driver.FindElement(By.XPath("//button[contains(.,'Submit')]")).Click();
+            //    Thread.Sleep(2000);
+            //    driver.Navigate().GoToUrl("https://nike2.lingotek.com/project/255?communityId=bbd48f7b-6f6c-4cf3-aa01-53af5fba0a8f");
+            //    Thread.Sleep(7000);
+            //    Actions a = new Actions(driver);
+            //    a.Click(driver.FindElement(By.XPath("//input[@class='form-control header-input']")))
+            //        .KeyDown(Keys.Control)
+            //        .SendKeys("a")
+            //        .KeyUp(Keys.Control)
+            //        .SendKeys(Keys.Backspace)
+            //        .Build()
+            //        .Perform();
+
+            //}
+
+            //Thread.Sleep(2000);
+            driver.Close();
+
+
+
+
+
+
+
+
+
+            //}
+
+
+        }
+    }
+}
